@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "951556008439",
+    "project_id": "apex-42f28",
+    "storage_bucket": "apex-42f28.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:951556008439:android:7adf7c7a5ecd18a1caa6f2",
+        "android_client_info": {
+          "package_name": "dev.kiishidart.apex"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "951556008439-nofflp6g0qk91h0kian9pmq8lgt3jh04.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dev.kiishidart.apex",
+            "certificate_hash": "ca26560740d0472113c1786109bcc24c617f24b8"
+          }
+        },
+        {
+          "client_id": "951556008439-eh4ra26kd0t8183qrl1bp5h37gvdubor.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3Gkp5zOTtK-iJTx4LSqyH_Px5v5vUqkk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "951556008439-7viev5jsogldc928sco5omb6fe3s3t71.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "951556008439-f3411mro43dl3onkqci1610ftjnfvrha.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "dev.kiishidart.apex"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
