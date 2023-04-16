@@ -57,7 +57,7 @@ class _AddProductsViewState extends ConsumerState<AddProductsView> {
             context: context,
             name: productNameController.text,
             description: descriptionController.text,
-            price: double.parse(priceController.text),
+            price: int.parse(priceController.text),
             quantity: int.parse(quantityController.text),
             category: category,
             images: images,

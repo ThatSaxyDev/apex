@@ -12,11 +12,25 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:uuid/uuid.dart';
 
+//! get particular product details provider
+final getProductDetailsProvider =
+    StreamProvider.family((ref, String productId) {
+  final productController = ref.watch(productControllerProvider.notifier);
+  return productController.getProductDetail(productId);
+});
+
 //! get sellers products providers
 final getSellerProductsProvider = StreamProvider((ref) {
   final productController = ref.watch(productControllerProvider.notifier);
 
-  return productController.getSellerProducts();
+  return productController.getAllProducts();
+});
+
+//! get all products providers
+final getAllProductsProvider = StreamProvider((ref) {
+  final productController = ref.watch(productControllerProvider.notifier);
+
+  return productController.getAllProducts();
 });
 
 final productControllerProvider =
@@ -48,7 +62,7 @@ class ProductController extends StateNotifier<bool> {
     required BuildContext context,
     required String name,
     required String description,
-    required double price,
+    required int price,
     required int quantity,
     required String category,
     required List<File>? images,
@@ -88,6 +102,7 @@ class ProductController extends StateNotifier<bool> {
       id: productId,
       createdAt: DateTime.now(),
       rating: [],
+      addedToCart: [],
     );
 
     final res = await _productRepository.addProducts(product);
@@ -102,9 +117,42 @@ class ProductController extends StateNotifier<bool> {
     );
   }
 
-  //! get products
+  void deleteProduct({
+    required BuildContext context,
+    required ProductModel product,
+  }) async {
+    final res = await _productRepository.deleteProduct(product);
+
+    res.fold(
+      (l) => showSnackBar(context, l.message),
+      (r) {
+        showSnackBar(context, 'Product Deleted!');
+        // Routemaster.of(context).pop();
+      },
+    );
+  }
+
+  void addToProductQuantitySeller(ProductModel product) async {
+    return _productRepository.addToProductQuantitySeller(product);
+  }
+
+  void reduceFromProductQuantitySeller(ProductModel product) async {
+    return _productRepository.reduceFromProductQuantitySeller(product);
+  }
+
+  //! get particualar product details
+  Stream<ProductModel> getProductDetail(String productId) {
+    return _productRepository.getProductDetail(productId);
+  }
+
+  //! get sellers products
   Stream<List<ProductModel>> getSellerProducts() {
     final user = _ref.read(userProvider)!;
     return _productRepository.getSellerProducts(user.uid);
+  }
+
+  //! get all products
+  Stream<List<ProductModel>> getAllProducts() {
+    return _productRepository.getAllProducts();
   }
 }

@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:apex/features/seller/features/products/controllers/product_controller.dart';
+import 'package:apex/utils/app_texts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,18 +10,14 @@ import 'package:apex/models/product_model.dart';
 import 'package:apex/utils/widget_extensions.dart';
 import 'package:routemaster/routemaster.dart';
 
-class SellerProduct extends ConsumerWidget {
+class CustomersProduct extends ConsumerWidget {
   final ProductModel product;
   final int index;
-  const SellerProduct({
+  const CustomersProduct({
     super.key,
     required this.product,
     required this.index,
   });
-
-  void deleteProduct(WidgetRef ref, BuildContext context) {
-    ref.read(productControllerProvider.notifier).deleteProduct(context: context, product: product);
-  }
 
   void navigateToProductDetails(BuildContext context) {
     Routemaster.of(context).push('/product-details/${product.id}');
@@ -57,32 +54,40 @@ class SellerProduct extends ConsumerWidget {
                 ),
               ),
             ),
-            10.sbH,
-            Padding(
-              padding: index % 2 == 0
-                  ? EdgeInsets.only(left: 24.w, right: 12.w)
-                  : EdgeInsets.only(right: 24.w, left: 12.w),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    product.name,
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+            15.sbH,
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: index % 2 == 0
+                    ? EdgeInsets.only(left: 24.w, right: 12.w)
+                    : EdgeInsets.only(right: 24.w, left: 12.w),
+                child: Text(
+                  product.name,
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w600,
                   ),
-                  17.sbW,
-                  InkWell(
-                    onTap: () => deleteProduct(ref, context),
-                    child: const Icon(
-                      PhosphorIcons.trashBold,
-                      color: Colors.red,
-                    ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ),
+            7.sbH,
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: index % 2 == 0
+                    ? EdgeInsets.only(left: 24.w, right: 12.w)
+                    : EdgeInsets.only(right: 24.w, left: 12.w),
+                child: Text(
+                  '${AppTexts.naira} ${product.price}',
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w600,
                   ),
-                ],
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             ),
           ],

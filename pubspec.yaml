@@ -67,6 +67,8 @@ dependencies:
   permission_handler: ^10.2.0
   swipe_to: ^1.0.2
   carousel_slider: ^4.2.1
+  flutter_rating_bar: ^4.0.1
+  badges: ^3.1.1
 
 dev_dependencies:
   flutter_launcher_icons: ^0.12.0

@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart';
 class ProductModel {
   final String name;
   final String description;
-  final double price;
+  final int price;
   final int quantity;
   final String category;
   final List<dynamic> images;
@@ -14,6 +14,7 @@ class ProductModel {
   final String sellerId;
   final List<dynamic> rating;
   final DateTime createdAt;
+  final List<dynamic> addedToCart;
   const ProductModel({
     required this.name,
     required this.description,
@@ -25,12 +26,13 @@ class ProductModel {
     required this.sellerId,
     required this.rating,
     required this.createdAt,
+    required this.addedToCart,
   });
 
   ProductModel copyWith({
     String? name,
     String? description,
-    double? price,
+    int? price,
     int? quantity,
     String? category,
     List<dynamic>? images,
@@ -38,6 +40,7 @@ class ProductModel {
     String? sellerId,
     List<dynamic>? rating,
     DateTime? createdAt,
+    List<dynamic>? addedToCart,
   }) {
     return ProductModel(
       name: name ?? this.name,
@@ -50,6 +53,7 @@ class ProductModel {
       sellerId: sellerId ?? this.sellerId,
       rating: rating ?? this.rating,
       createdAt: createdAt ?? this.createdAt,
+      addedToCart: addedToCart ?? this.addedToCart,
     );
   }
 
@@ -65,6 +69,7 @@ class ProductModel {
       'sellerId': sellerId,
       'rating': rating,
       'createdAt': createdAt.millisecondsSinceEpoch,
+      'addedToCart': addedToCart,
     };
   }
 
@@ -72,7 +77,7 @@ class ProductModel {
     return ProductModel(
       name: (map["name"] ?? '') as String,
       description: (map["description"] ?? '') as String,
-      price: (map["price"] ?? 0.0) as double,
+      price: (map["price"] ?? 0) as int,
       quantity: (map["quantity"] ?? 0) as int,
       category: (map["category"] ?? '') as String,
       images: List<dynamic>.from(((map['images'] ?? const <dynamic>[]) as List<dynamic>),),
@@ -80,6 +85,7 @@ class ProductModel {
       sellerId: (map["sellerId"] ?? '') as String,
       rating: List<dynamic>.from(((map['rating'] ?? const <dynamic>[]) as List<dynamic>),),
       createdAt: DateTime.fromMillisecondsSinceEpoch((map["createdAt"]??0) as int),
+      addedToCart: List<dynamic>.from(((map['addedToCart'] ?? const <dynamic>[]) as List<dynamic>),),
     );
   }
 
@@ -90,7 +96,7 @@ class ProductModel {
 
   @override
   String toString() {
-    return 'ProductModel(name: $name, description: $description, price: $price, quantity: $quantity, category: $category, images: $images, id: $id, sellerId: $sellerId, rating: $rating, createdAt: $createdAt)';
+    return 'ProductModel(name: $name, description: $description, price: $price, quantity: $quantity, category: $category, images: $images, id: $id, sellerId: $sellerId, rating: $rating, createdAt: $createdAt, addedToCart: $addedToCart)';
   }
 
   @override
@@ -107,7 +113,8 @@ class ProductModel {
       other.id == id &&
       other.sellerId == sellerId &&
       listEquals(other.rating, rating) &&
-      other.createdAt == createdAt;
+      other.createdAt == createdAt &&
+      listEquals(other.addedToCart, addedToCart);
   }
 
   @override
@@ -121,6 +128,7 @@ class ProductModel {
       id.hashCode ^
       sellerId.hashCode ^
       rating.hashCode ^
-      createdAt.hashCode;
+      createdAt.hashCode ^
+      addedToCart.hashCode;
   }
 }

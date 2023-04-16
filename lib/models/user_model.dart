@@ -61,11 +61,7 @@ class UserModel {
       profilePic: (map["profilePic"] ?? '') as String,
       address: (map["address"] ?? '') as String,
       userType: (map["userType"] ?? '') as String,
-      cart: List<Map<String, dynamic>>.from(
-        map['cart']?.map(
-          (x) => Map<String, dynamic>.from(x),
-        ),
-      ),
+      cart: List<dynamic>.from(((map['cart'] ?? const <dynamic>[]) as List<dynamic>),),
     );
   }
 

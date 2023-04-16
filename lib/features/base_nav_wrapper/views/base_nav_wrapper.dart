@@ -1,6 +1,7 @@
 import 'package:apex/features/auth/controller/auth_controller.dart';
 import 'package:apex/features/base_nav_wrapper/widgets/nav_bar_widget.dart';
 import 'package:apex/features/home/dummy_home.dart';
+import 'package:apex/features/home/views/home_view.dart';
 import 'package:apex/theme/palette.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,11 +17,9 @@ class BaseNavWrapper extends ConsumerStatefulWidget {
 
 class _BaseNavWrapperState extends ConsumerState<BaseNavWrapper> {
   List<Widget> pages = [
+    HomeView(),
     Center(
-      child: Text('home'),
-    ),
-    Center(
-      child: Text('categories'),
+      child: Text('cart'),
     ),
     DummyHome(),
   ];
@@ -57,7 +56,7 @@ class _BaseNavWrapperState extends ConsumerState<BaseNavWrapper> {
       bottomNavigationBar: ValueListenableBuilder(
         valueListenable: _page,
         builder: (context, value, child) => Material(
-          elevation: 5,
+          elevation: 0,
           // nav bar content
           child: Container(
             color: currentTheme.backgroundColor,

@@ -114,12 +114,8 @@ class ProductsView extends ConsumerWidget {
                     return Column(
                       children: [
                         SellerProduct(
+                          product: productData,
                           index: index,
-                          productImage: productData.images[0],
-                          productName: productData.name,
-                          onTap: () {},
-                          onDelete: () {},
-                          // => deleteProduct(productData, index),
                         ),
                       ],
                     );

@@ -26,14 +26,14 @@ class Loader extends ConsumerWidget {
     final currenTheme = ref.watch(themeNotifierProvider);
     return  Center(
       child: SizedBox(
-        height: 60,
-        width: 60,
+        height: 50,
+        width: 50,
         // child: CircularProgressIndicator(
         //   color: Pallete.blueColor,
         // ),
         child: LoadingAnimationWidget.discreteCircle(
            color: currenTheme.textTheme.bodyMedium!.color!,
-          size: 60,
+          size: 40,
         ),
       ),
     );

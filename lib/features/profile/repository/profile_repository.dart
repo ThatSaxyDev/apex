@@ -164,7 +164,4 @@ class UserProfileRepository {
 
   CollectionReference get _verifications =>
       _firestore.collection(FirebaseConstants.verificationCollection);
-
-  CollectionReference get _posts =>
-      _firestore.collection(FirebaseConstants.postsCollection);
 }

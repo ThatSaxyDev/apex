@@ -1,8 +1,11 @@
 import 'package:apex/features/auth/views/login_screen.dart';
 import 'package:apex/features/base_nav_wrapper/views/base_nav_wrapper.dart';
 import 'package:apex/features/base_nav_wrapper/views/seller_base_nav_wrapper.dart';
+import 'package:apex/features/cart/views/cart_view.dart';
 import 'package:apex/features/home/dummy_home.dart';
 import 'package:apex/features/seller/features/products/views/add_products_view.dart';
+import 'package:apex/features/seller/features/products/views/buyer_product_details.dart';
+import 'package:apex/features/seller/features/products/views/seller_product_details_view.dart';
 import 'package:flutter/material.dart';
 import 'package:routemaster/routemaster.dart';
 
@@ -23,6 +26,11 @@ final sellerLoggedInRoute = RouteMap(
         ),
     '/add-products': (_) => const MaterialPage(
           child: AddProductsView(),
+        ),
+    '/product-details/:productId': (routeData) => MaterialPage(
+          child: SellerProductDetails(
+            productId: routeData.pathParameters['productId']!,
+          ),
         ),
     // '/mark-attendance': (_) => const MaterialPage(
     //       child: MarkAttendanceView(),
@@ -50,9 +58,14 @@ final buyerLoggedInRoute = RouteMap(
     '/': (_) => const MaterialPage(
           child: BaseNavWrapper(),
         ),
-    // '/edit-profile': (_) => const MaterialPage(
-    //       child: EditProfileView(),
-    //     ),
+    '/product-details/:productId': (routeData) => MaterialPage(
+          child: BuyerProductDetailsView(
+            productId: routeData.pathParameters['productId']!,
+          ),
+        ),
+    '/cart': (_) => const MaterialPage(
+          child: CartView(),
+        ),
     // '/project/:name': (routeData) => MaterialPage(
     //       child: ProjectView(
     //         name: routeData.pathParameters['name']!,
