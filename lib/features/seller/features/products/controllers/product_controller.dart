@@ -33,6 +33,14 @@ final getAllProductsProvider = StreamProvider((ref) {
   return productController.getAllProducts();
 });
 
+//! get all products by categories providers
+final getAllProductsByCategoryProvider =
+    StreamProvider.family((ref, String categoryName) {
+  final productController = ref.watch(productControllerProvider.notifier);
+
+  return productController.getAllProductsByCategories(categoryName);
+});
+
 final productControllerProvider =
     StateNotifierProvider<ProductController, bool>((ref) {
   final productRepository = ref.watch(productRepositoryProvider);
@@ -154,5 +162,10 @@ class ProductController extends StateNotifier<bool> {
   //! get all products
   Stream<List<ProductModel>> getAllProducts() {
     return _productRepository.getAllProducts();
+  }
+
+  //! get all products by categories for customers
+  Stream<List<ProductModel>> getAllProductsByCategories(String category) {
+    return _productRepository.getAllProductsByCategories(category);
   }
 }

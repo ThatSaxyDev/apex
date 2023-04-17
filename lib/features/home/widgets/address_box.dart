@@ -37,7 +37,9 @@ class AddressBox extends ConsumerWidget {
             child: Padding(
               padding: EdgeInsets.only(left: 5.w),
               child: Text(
-                'Delivery to ${user.name} - ${user.address}',
+                user.address.isEmpty
+                    ? 'Delivery to ${user.name} - Set your address'
+                    : 'Delivery to ${user.name} - ${user.address}',
                 style: const TextStyle(
                   fontWeight: FontWeight.w500,
                 ),

@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:routemaster/routemaster.dart';
 
 import '../../../utils/app_texts.dart';
 
@@ -34,11 +35,16 @@ class CartView extends ConsumerWidget {
         .removeFromCart(context: context, productId: productId, userId: userId);
   }
 
+  void navigateToUpdateAddress(BuildContext context) {
+    Routemaster.of(context).push('/update-address');
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentTheme = ref.watch(themeNotifierProvider);
     final user = ref.watch(userProvider)!;
     final productsInCartStream = ref.watch(getAllProductsInCartProvider);
+    ValueNotifier<int> totalPrice = ValueNotifier(0);
 
     //! cart
     Set uniqueElements = Set<String>.from(user.cart);
@@ -123,58 +129,66 @@ class CartView extends ConsumerWidget {
                               fontWeight: FontWeight.w800,
                             ),
                           ),
-                          Consumer(
-                            builder: (context, ref, child) {
-                              final productsInCartStream =
-                                  ref.watch(getAllProductsInCartProvider);
+                          user.cart.isEmpty
+                              ? const SizedBox.shrink()
+                              : Consumer(
+                                  builder: (context, ref, child) {
+                                    final productsInCartStream =
+                                        ref.watch(getAllProductsInCartProvider);
 
-                              return productsInCartStream.when(
-                                data: (products) {
-                                  // log(products.toString());
-                                  // Create a Map with the count of each productId in the productIds list
-                                  List<int> prices = products
-                                      .map((product) => product.price)
-                                      .toList();
+                                    return productsInCartStream.when(
+                                      data: (products) {
+                                        // log(products.toString());
+                                        // Create a Map with the count of each productId in the productIds list
+                                        List<int> prices = products
+                                            .map((product) => product.price)
+                                            .toList();
 
-                                  Map<String, int> productCount = {};
-                                  List<int> counts = [];
-                                  for (String productId in user.cart) {
-                                    productCount[productId] =
-                                        (productCount[productId] ?? 0) + 1;
-                                  }
+                                        Map<String, int> productCount = {};
+                                        List<int> counts = [];
+                                        for (String productId in user.cart) {
+                                          productCount[productId] =
+                                              (productCount[productId] ?? 0) +
+                                                  1;
+                                        }
 
-                                  for (ProductModel product in products) {
-                                    int count = productCount[product.id] ?? 0;
+                                        for (ProductModel product in products) {
+                                          int count =
+                                              productCount[product.id] ?? 0;
 
-                                    counts.add(count);
-                                  }
+                                          counts.add(count);
+                                        }
 
-                                  // log(counts.toString());
+                                        // log(counts.toString());
 
-                                  int result = prices
-                                      .asMap()
-                                      .map((index, value) => MapEntry(
-                                          index, value * counts[index]))
-                                      .values
-                                      .reduce((sum, value) => sum + value);
+                                        int result = prices
+                                            .asMap()
+                                            .map((index, value) => MapEntry(
+                                                index, value * counts[index]))
+                                            .values
+                                            .reduce(
+                                                (sum, value) => sum + value);
 
-                                  // log(result.toString());
+                                        // log(result.toString());
+                                        totalPrice.value = result;
+                                        totalPrice.notifyListeners();
+                                        // log(totalPrice.value.toString());
 
-                                  return Text(
-                                    '${AppTexts.naira} $result',
-                                    style: TextStyle(
-                                      fontSize: 20.sp,
-                                      fontWeight: FontWeight.w800,
-                                      color: Colors.cyan,
-                                    ),
-                                  );
-                                },
-                                error: (error, stactrace) =>
-                                    ErrorText(error: error.toString()),
-                                loading: () => const Loader(),
-                              );
-                            },
-                          ),
+                                        return Text(
+                                          '${AppTexts.naira} $result',
+                                          style: TextStyle(
+                                            fontSize: 20.sp,
+                                            fontWeight: FontWeight.w800,
+                                            color: Colors.cyan,
+                                          ),
+                                        );
+                                      },
+                                      error: (error, stactrace) =>
+                                          ErrorText(error: error.toString()),
+                                      loading: () => const Loader(),
+                                    );
+                                  },
+                                ),
                         ],
                       ),
                     ),
@@ -199,7 +213,8 @@ class CartView extends ConsumerWidget {
                   productsInCartStream.when(
                     data: (products) {
                       return ListView.builder(
-                        padding: 15.padH,
+                        padding: EdgeInsets.symmetric(horizontal: 15.w)
+                            .copyWith(bottom: 25.h),
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         itemCount: products.length,
@@ -387,6 +402,91 @@ class CartView extends ConsumerWidget {
                     loading: () => const Loader(),
                   ),
                 ],
+              ),
+            ),
+      bottomNavigationBar: user.cart.isEmpty
+          ? null
+          : Container(
+              height: 110.h,
+              decoration: BoxDecoration(
+                color: currentTheme.textTheme.bodyMedium!.color,
+                // borderRadius: BorderRadius.circular(30.r),
+              ),
+              child: Center(
+                child: BButton(
+                  height: 55.h,
+                  width: 200.w,
+                  color: currentTheme.backgroundColor,
+                  onTap: () {
+                    if (user.address.isEmpty) {
+                      navigateToUpdateAddress(context);
+                    } else {
+                      showModalBottomSheet(
+                        isScrollControlled: true,
+                        backgroundColor:
+                            currentTheme.textTheme.bodyMedium!.color,
+                        context: context,
+                        builder: (context) => Wrap(
+                          children: [
+                            Container(
+                              height: 240.h,
+                              width: double.infinity,
+                              padding: EdgeInsets.only(
+                                  top: 15.h, right: 24.w, left: 24.w),
+                              decoration: BoxDecoration(
+                                color: currentTheme.textTheme.bodyMedium!.color,
+                                borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(30.r),
+                                ),
+                              ),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    'Pay:',
+                                    style: TextStyle(
+                                        fontSize: 25.sp,
+                                        color: currentTheme.backgroundColor,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  15.sbH,
+                                  Text(
+                                    '${AppTexts.naira} ${totalPrice.value}',
+                                    style: TextStyle(
+                                      fontSize: 25.sp,
+                                      fontWeight: FontWeight.w900,
+                                      color: currentTheme.backgroundColor,
+                                    ),
+                                  ),
+                                  20.sbH,
+                                  BButton(
+                                    onTap: () {
+                                      ref
+                                          .read(cartControllerProvider.notifier)
+                                          .createCheckoutOrder(
+                                            cart: user.cart,
+                                            context: context,
+                                            totalPrice: totalPrice.value,
+                                          );
+                                      Routemaster.of(context).pop();
+                                    },
+                                    height: 55.h,
+                                    width: 200.w,
+                                    color: currentTheme.backgroundColor,
+                                    text: 'Place Order',
+                                    textColor: currentTheme
+                                        .textTheme.bodyMedium!.color,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                  },
+                  text: 'Checkout',
+                  textColor: currentTheme.textTheme.bodyMedium!.color,
+                ),
               ),
             ),
     );

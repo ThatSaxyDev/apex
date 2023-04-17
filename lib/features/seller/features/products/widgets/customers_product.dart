@@ -1,7 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:apex/features/seller/features/products/controllers/product_controller.dart';
+import 'package:apex/theme/palette.dart';
 import 'package:apex/utils/app_texts.dart';
+import 'package:apex/utils/string_extensions.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
@@ -25,6 +29,7 @@ class CustomersProduct extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final currentTheme = ref.watch(themeNotifierProvider);
     return InkWell(
       onTap: () => navigateToProductDetails(context),
       child: SizedBox(
@@ -36,21 +41,38 @@ class CustomersProduct extends ConsumerWidget {
             Expanded(
               // height: 140.h,
               // width: 140.w,
-              child: Padding(
-                padding: index % 2 == 0
+              child: Container(
+                height: double.infinity,
+                width: double.infinity,
+                margin: index % 2 == 0
                     ? EdgeInsets.only(left: 24.w, right: 12.w)
                     : EdgeInsets.only(right: 24.w, left: 12.w),
-                child: PhysicalModel(
-                  color: Colors.white,
-                  elevation: 15,
+                decoration: BoxDecoration(
+                  color: currentTheme.backgroundColor,
                   borderRadius: BorderRadius.circular(15.r),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(15.r),
-                    child: Image.network(
-                      product.images[0],
-                      fit: BoxFit.contain,
+                  border: Border.all(width: 0.5.w),
+                ),
+                child: CachedNetworkImage(
+                  imageUrl: product.images[0],
+                  placeholder: (context, url) => Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Colors.black12.withOpacity(0.1),
+                          Colors.black12.withOpacity(0.1),
+                          Colors.black26,
+                          Colors.black26,
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      borderRadius: BorderRadius.circular(15.r),
                     ),
-                  ),
+                  )
+                      .animate(onPlay: (controller) => controller.repeat())
+                      .shimmer(duration: 1200.ms),
+                  errorWidget: (context, url, error) =>
+                      const Icon(Icons.error),
                 ),
               ),
             ),

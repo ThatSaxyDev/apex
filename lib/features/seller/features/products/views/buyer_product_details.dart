@@ -392,16 +392,16 @@ class _BuyerProductDetailsViewState
                     ],
                   ),
                 )
-              : isLoading
-                  ? const Loader()
-                  : BButton(
-                      onTap: () => addToCart(context, user.uid),
-                      width: 200.w,
-                      height: 55.h,
-                      color: currentTheme.backgroundColor,
-                      text: 'Add to cart',
-                      textColor: currentTheme.textTheme.bodyMedium!.color,
-                    ),
+              // : isLoading
+              //     ? const Loader()
+              : BButton(
+                  onTap: () => addToCart(context, user.uid),
+                  width: 200.w,
+                  height: 55.h,
+                  color: currentTheme.backgroundColor,
+                  text: 'Add to cart',
+                  textColor: currentTheme.textTheme.bodyMedium!.color,
+                ),
         ),
       ),
     );

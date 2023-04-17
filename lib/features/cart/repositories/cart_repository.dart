@@ -2,6 +2,7 @@ import 'package:apex/core/constants/firebase_constants.dart';
 import 'package:apex/core/failure.dart';
 import 'package:apex/core/providers/firebase_provider.dart';
 import 'package:apex/core/type_defs.dart';
+import 'package:apex/models/order_model.dart';
 import 'package:apex/models/product_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -82,9 +83,40 @@ class CartRepository {
             .toList());
   }
 
+  //! create check out order
+  FutureVoid createCheckoutOrder(OrderModel order) async {
+    try {
+      return right(_orders.doc(order.orderId).set(order.toMap()));
+    } on FirebaseException catch (e) {
+      throw e.message!;
+    } catch (e) {
+      return left(Failure(e.toString()));
+    }
+  }
+
+  //! clear cart
+  FutureVoid clearCart(String productId, String uid) async {
+    try {
+      _products.doc(productId).update({
+        'addedToCart': FieldValue.arrayRemove([uid])
+      });
+
+      return right(_users.doc(uid).update({
+        'cart': [],
+      }));
+    } on FirebaseException catch (e) {
+      throw e.message!;
+    } catch (e) {
+      return left(Failure(e.toString()));
+    }
+  }
+
   CollectionReference get _users =>
       _firestore.collection(FirebaseConstants.usersCollection);
 
   CollectionReference get _products =>
       _firestore.collection(FirebaseConstants.productsCollection);
+
+  CollectionReference get _orders =>
+      _firestore.collection(FirebaseConstants.ordersCollection);
 }

@@ -1,7 +1,9 @@
 import 'package:apex/features/auth/controller/auth_controller.dart';
 import 'package:apex/features/base_nav_wrapper/widgets/nav_bar_widget.dart';
+import 'package:apex/features/categories/views/categories_view.dart';
 import 'package:apex/features/home/dummy_home.dart';
 import 'package:apex/features/home/views/home_view.dart';
+import 'package:apex/features/profile/views/profile_view.dart';
 import 'package:apex/theme/palette.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,10 +20,8 @@ class BaseNavWrapper extends ConsumerStatefulWidget {
 class _BaseNavWrapperState extends ConsumerState<BaseNavWrapper> {
   List<Widget> pages = [
     HomeView(),
-    Center(
-      child: Text('cart'),
-    ),
-    DummyHome(),
+    CategoriesView(),
+    ProfileView(),
   ];
 
   final ValueNotifier<int> _page = ValueNotifier(0);

@@ -25,6 +25,10 @@ class HomeView extends ConsumerWidget {
     Routemaster.of(context).push('/cart');
   }
 
+  void navigateToUpdateAddress(BuildContext context) {
+    Routemaster.of(context).push('/update-address');
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentTheme = ref.watch(themeNotifierProvider);
@@ -105,7 +109,10 @@ class HomeView extends ConsumerWidget {
         ),
         child: Column(
           children: [
-            const AddressBox(),
+            InkWell(
+              onTap: () => navigateToUpdateAddress(context),
+              child: const AddressBox(),
+            ),
             10.sbH,
             const CarouselImage(),
 

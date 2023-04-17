@@ -11,11 +11,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class DummyHome extends ConsumerWidget {
   const DummyHome({super.key});
 
-  void updateProfile(BuildContext context, WidgetRef ref, String type) {
-    ref
-        .read(userProfileControllerProvider.notifier)
-        .setUserType(context: context, type: type);
-  }
+  // void updateProfile(BuildContext context, WidgetRef ref, String type) {
+  //   ref
+  //       .read(userProfileControllerProvider.notifier)
+  //       .setUserType(context: context, type: type);
+  // }
 
   void logOut(WidgetRef ref) {
     ref.read(authControllerProvider.notifier).logOut();

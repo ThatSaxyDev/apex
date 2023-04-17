@@ -87,6 +87,19 @@ class ProductRepository {
             .toList());
   }
 
+  //! get all products by categories for customers
+  Stream<List<ProductModel>> getAllProductsByCategories(String category) {
+    return _products
+        .where('category', isEqualTo: category)
+        .orderBy('createdAt', descending: true)
+        .snapshots()
+        .map((event) => event.docs
+            .map(
+              (e) => ProductModel.fromMap(e.data() as Map<String, dynamic>),
+            )
+            .toList());
+  }
+
   CollectionReference get _products =>
       _firestore.collection(FirebaseConstants.productsCollection);
 }

@@ -2,7 +2,11 @@ import 'package:apex/features/auth/views/login_screen.dart';
 import 'package:apex/features/base_nav_wrapper/views/base_nav_wrapper.dart';
 import 'package:apex/features/base_nav_wrapper/views/seller_base_nav_wrapper.dart';
 import 'package:apex/features/cart/views/cart_view.dart';
+import 'package:apex/features/categories/views/specific_category_view.dart';
 import 'package:apex/features/home/dummy_home.dart';
+import 'package:apex/features/orders/views/order_details_view.dart';
+import 'package:apex/features/orders/views/orders_view.dart';
+import 'package:apex/features/profile/views/address_view.dart';
 import 'package:apex/features/seller/features/products/views/add_products_view.dart';
 import 'package:apex/features/seller/features/products/views/buyer_product_details.dart';
 import 'package:apex/features/seller/features/products/views/seller_product_details_view.dart';
@@ -66,11 +70,22 @@ final buyerLoggedInRoute = RouteMap(
     '/cart': (_) => const MaterialPage(
           child: CartView(),
         ),
-    // '/project/:name': (routeData) => MaterialPage(
-    //       child: ProjectView(
-    //         name: routeData.pathParameters['name']!,
-    //       ),
-    //     ),
+    '/update-address': (_) => const MaterialPage(
+          child: AddressView(),
+        ),
+    '/orders': (_) => const MaterialPage(
+          child: OrdersView(),
+        ),
+    '/category/:name': (routeData) => MaterialPage(
+          child: SpecificCategoryView(
+            categoryName: routeData.pathParameters['name']!,
+          ),
+        ),
+    '/orders/:orderId': (routeData) => MaterialPage(
+          child: OrderDetailsView(
+            orderId: routeData.pathParameters['orderId']!,
+          ),
+        ),
   },
   onUnknownRoute: (path) => const MaterialPage(
     child: DummyHome(),
